@@ -23,15 +23,28 @@
 
 import SwiftUI
 
-public struct AnyTabItemStyle: TabItemStyle {
+public struct TabBarViewModifier<TabItem: Tabbable>: ViewModifier {
     
-    private let _makeTabItem: (String, String, Bool) -> AnyView
+    @EnvironmentObject private var selectionObject: TabBarSelection<TabItem>
     
-    public init<TabItem: TabItemStyle>(itemStyle: TabItem) {
-        self._makeTabItem = itemStyle.tabItemErased(icon:title:isSelected:)
+    public let item: TabItem
+    
+    public func body(content: Content) -> some View {
+        Group {
+            if self.item == self.selectionObject.selection {
+                content
+            } else {
+                Color.clear
+            }
+        }
+        .preference(key: TabBarPreferenceKey.self, value: [self.item])
+    }
+}
+
+extension View {
+    
+    public func tabItem<TabItem: Tabbable>(for item: TabItem) -> some View {
+        return self.modifier(TabBarViewModifier(item: item))
     }
     
-    public func tabItem(icon: String, title: String, isSelected: Bool) -> some View {
-        return self._makeTabItem(icon, title, isSelected)
-    }
 }

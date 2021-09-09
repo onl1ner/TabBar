@@ -23,15 +23,11 @@
 
 import SwiftUI
 
-public struct AnyTabItemStyle: TabItemStyle {
+public class TabBarSelection<TabItem: Tabbable>: ObservableObject {
     
-    private let _makeTabItem: (String, String, Bool) -> AnyView
+    @Binding public var selection: TabItem
     
-    public init<TabItem: TabItemStyle>(itemStyle: TabItem) {
-        self._makeTabItem = itemStyle.tabItemErased(icon:title:isSelected:)
-    }
-    
-    public func tabItem(icon: String, title: String, isSelected: Bool) -> some View {
-        return self._makeTabItem(icon, title, isSelected)
+    public init(selection: Binding<TabItem>) {
+        self._selection = selection
     }
 }

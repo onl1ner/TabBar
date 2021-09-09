@@ -23,15 +23,13 @@
 
 import SwiftUI
 
-public struct AnyTabItemStyle: TabItemStyle {
+public struct TabBarPreferenceKey<TabItem: Tabbable>: PreferenceKey {
     
-    private let _makeTabItem: (String, String, Bool) -> AnyView
-    
-    public init<TabItem: TabItemStyle>(itemStyle: TabItem) {
-        self._makeTabItem = itemStyle.tabItemErased(icon:title:isSelected:)
+    public static var defaultValue: [TabItem] {
+        return .init()
     }
     
-    public func tabItem(icon: String, title: String, isSelected: Bool) -> some View {
-        return self._makeTabItem(icon, title, isSelected)
+    public static func reduce(value: inout [TabItem], nextValue: () -> [TabItem]) {
+        value.append(contentsOf: nextValue())
     }
 }
