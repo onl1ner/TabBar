@@ -23,21 +23,8 @@
 
 ## Installation
 
-**TabBar** is available through [CocoaPods](https://cocoapods.org) and [Swift Package Manager](https://github.com/apple/swift-package-manager)
+**TabBar** is available through [Swift Package Manager](https://github.com/apple/swift-package-manager)
 
-### CocoaPods
-- Add the following line into your Podfile:
-
-  ```ruby
-  pod 'STTabBar'
-  ```
-
-- Then run this command in your terminal:
-
-  ```bash
-  $ pod install
-  ```
-  
 ### Swift Package Manager
 - In Xcode select: 
 
