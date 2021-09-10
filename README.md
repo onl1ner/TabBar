@@ -91,7 +91,7 @@ After these actions tab bar with default style will be created.
 
 ### Customization
 
-`TabBar` component is highly customizable. This is achieved by introducing `TabBarStyle` and `TabItemStyle` protocols. By implementing each of the protocol you will be able to build your custom slider. **NOTE** that `TabBar` automaticaly pushes down to bottom any of tab bar styles.
+`TabBar` component is highly customizable. This is achieved by introducing `TabBarStyle` and `TabItemStyle` protocols. By implementing each of the protocol you will be able to build your custom tab bar. **NOTE** that `TabBar` automaticaly pushes down to bottom any of tab bar styles.
 
 After creating your custom styles you may inject them to your tab bar by using `tabBar(style:)` and `tabItem(style:)` functions. Here is the showcase of default style and one of the examples of what you can achieve by customizing tab bar:
 
