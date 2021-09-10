@@ -25,31 +25,24 @@ import SwiftUI
 
 public struct DefaultTabBarStyle: TabBarStyle {
     
-    public func tabBar(itemsContainer: @escaping () -> AnyView) -> some View {
-        GeometryReader { geometry in
-            VStack(spacing: 0.0) {
-                Spacer()
-                
-                Divider()
-                
-                VStack {
-                    itemsContainer()
-                        .padding(.top, 8.0)
-                        .frame(height: 50.0)
-                    
-                    Spacer()
-                }
-                .foregroundColor(
-                    Color(
-                        red:   249 / 255,
-                        green: 249 / 255,
-                        blue:  249 / 255,
-                        opacity: 0.94
-                    )
-                )
-                .frame(height: 50.0 + geometry.safeAreaInsets.bottom)
+    public func tabBar(with geometry: GeometryProxy, itemsContainer: @escaping () -> AnyView) -> some View {
+        VStack(spacing: 0.0) {
+            Divider()
+            
+            VStack {
+                itemsContainer()
+                    .frame(height: 50.0)
+                    .padding(.bottom, geometry.safeAreaInsets.bottom)
             }
-            .edgesIgnoringSafeArea(.bottom)
+            .background(
+                Color(
+                    red:   249 / 255,
+                    green: 249 / 255,
+                    blue:  249 / 255,
+                    opacity: 0.94
+                )
+            )
+            .frame(height: 50.0 + geometry.safeAreaInsets.bottom)
         }
     }
     

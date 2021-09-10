@@ -78,8 +78,15 @@ public struct TabBar<TabItem: Tabbable, Content: View>: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .environmentObject(self.selectedItem)
             
-            self.tabBarStyle.tabBar {
-                .init(self.tabItems)
+            GeometryReader { geometry in
+                VStack {
+                    Spacer()
+                    
+                    self.tabBarStyle.tabBar(with: geometry) {
+                        .init(self.tabItems)
+                    }
+                }
+                .edgesIgnoringSafeArea(.bottom)
             }
         }
         .onPreferenceChange(TabBarPreferenceKey.self) { value in

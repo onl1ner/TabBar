@@ -25,13 +25,13 @@ import SwiftUI
 
 public struct AnyTabBarStyle: TabBarStyle {
     
-    private let _makeTabBar: (@escaping () -> AnyView) -> AnyView
+    private let _makeTabBar: (GeometryProxy, @escaping () -> AnyView) -> AnyView
     
     public init<BarStyle: TabBarStyle>(barStyle: BarStyle) {
         self._makeTabBar = barStyle.tabBarErased
     }
     
-    public func tabBar(itemsContainer: @escaping () -> AnyView) -> some View {
-        return self._makeTabBar(itemsContainer)
+    public func tabBar(with geometry: GeometryProxy, itemsContainer: @escaping () -> AnyView) -> some View {
+        return self._makeTabBar(geometry, itemsContainer)
     }
 }

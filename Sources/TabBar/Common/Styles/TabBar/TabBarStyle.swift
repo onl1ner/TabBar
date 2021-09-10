@@ -26,12 +26,12 @@ import SwiftUI
 public protocol TabBarStyle {
     associatedtype Content: View
     
-    func tabBar(itemsContainer: @escaping () -> AnyView) -> Content
+    func tabBar(with geometry: GeometryProxy, itemsContainer: @escaping () -> AnyView) -> Content
 }
 
 extension TabBarStyle {
     
-    public func tabBarErased(itemsContainer: @escaping () -> AnyView) -> AnyView {
-        return .init(self.tabBar(itemsContainer: itemsContainer))
+    public func tabBarErased(with geometry: GeometryProxy, itemsContainer: @escaping () -> AnyView) -> AnyView {
+        return .init(self.tabBar(with: geometry, itemsContainer: itemsContainer))
     }
 }
