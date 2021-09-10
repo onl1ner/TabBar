@@ -1,8 +1,8 @@
 Pod::Spec.new do |spec|
 
-  spec.name          = "TabBar"
+  spec.name          = "STTabBar"
   spec.version       = "1.0.0"
-  spec.summary       = "TabBar – highly customizable tab bar for your SwiftUI application."
+  spec.summary       = "STTabBar – highly customizable tab bar for your SwiftUI application."
 
   spec.platform      = :ios, '13.0'
   spec.framework     = 'Foundation', 'SwiftUI'

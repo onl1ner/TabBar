@@ -29,7 +29,7 @@
 - Add the following line into your Podfile:
 
   ```ruby
-  pod 'TabBar'
+  pod 'STTabBar'
   ```
 
 - Then run this command in your terminal:
