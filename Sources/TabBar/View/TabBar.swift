@@ -65,6 +65,7 @@ public struct TabBar<TabItem: Tabbable, Content: View>: View {
                 self.tabItemStyle.tabItem(icon: item.icon, title: item.title, isSelected: self.selectedItem.selection == item)
                     .onTapGesture { [item] in
                         self.selectedItem.selection = item
+                        self.selectedItem.objectWillChange.send()
                     }
             }
             .frame(maxWidth: .infinity)
