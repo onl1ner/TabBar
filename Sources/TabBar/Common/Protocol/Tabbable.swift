@@ -23,7 +23,7 @@
 
 import Foundation
 
-public protocol Tabbable: Hashable, CaseIterable where AllCases == Array<Self> {
+public protocol Tabbable: Hashable {
     var icon: String { get }
     var title: String { get }
 }
