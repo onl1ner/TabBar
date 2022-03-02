@@ -49,11 +49,27 @@ struct ContentView: View {
     }
     
     @State private var selection: Item = .first
+    @State private var visibility: TabBarVisibility = .visible
     
     var body: some View {
-        TabBar(selection: $selection) {
-            Text("First")
-                .tabItem(for: Item.first)
+        TabBar(selection: $selection, visibility: $visibility) {
+            HStack{
+                Button(action: {
+                    switch visibility {
+                    case .visible:
+                        withAnimation {
+                            visibility = .invisible
+                        }
+                    case .invisible:
+                        withAnimation {
+                            visibility = .visible
+                        }
+                    }
+                }) {
+                    Text("Hide/Show TabBar")
+                }
+            }
+            .tabItem(for: Item.first)
             
             Text("Second")
                 .tabItem(for: Item.second)
