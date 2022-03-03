@@ -23,15 +23,12 @@
 
 import SwiftUI
 
-public enum TabBarVisibility: CaseIterable {
-  case visible,
-       invisible
-}
 
 public struct TabBar<TabItem: Tabbable, Content: View>: View {
     
     @State private var items: [TabItem]
-    private var visibility: Binding<TabBarVisibility>
+    
+    @Binding private var visibility: TabBarVisibility
     
     private let selectedItem: TabBarSelection<TabItem>
     
@@ -55,10 +52,14 @@ public struct TabBar<TabItem: Tabbable, Content: View>: View {
         self.content = content()
         
         self._items = .init(initialValue: .init())
-        self.visibility = visibility
+        self._visibility = visibility
     }
     
-    public init(selection: Binding<TabItem>, visibility: Binding<TabBarVisibility>, @ViewBuilder content: () -> Content) {
+    public init(
+        selection: Binding<TabItem>,
+        visibility: Binding<TabBarVisibility>,
+        @ViewBuilder content: () -> Content
+    ) {
         self.init(
             tabItemStyle : DefaultTabItemStyle(),
             tabBarStyle  : DefaultTabBarStyle(),
@@ -96,7 +97,7 @@ public struct TabBar<TabItem: Tabbable, Content: View>: View {
                     }
                 }
                 .edgesIgnoringSafeArea(.bottom)
-                .visibility(self.visibility.wrappedValue)
+                .visibility(self.visibility)
             }
         }
         .onPreferenceChange(TabBarPreferenceKey.self) { value in
@@ -113,7 +114,7 @@ extension TabBar {
             tabItemStyle : style,
             tabBarStyle  : self.tabBarStyle,
             selection    : self.selectedItem.$selection,
-            visibility   : self.visibility,
+            visibility   : self.$visibility,
             content      : { self.content }
         )
     }
@@ -123,19 +124,8 @@ extension TabBar {
             tabItemStyle : self.tabItemStyle,
             tabBarStyle  : style,
             selection    : self.selectedItem.$selection,
-            visibility   : self.visibility,
+            visibility   : self.$visibility,
             content      : { self.content }
         )
-    }
-}
-
-extension View {
-    @ViewBuilder public func visibility(_ visibility: TabBarVisibility) -> some View {
-        switch visibility {
-        case .visible:
-            self.transition(.move(edge: .bottom))
-        case .invisible:
-            hidden().transition(.move(edge: .bottom))
-        }
     }
 }

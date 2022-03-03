@@ -54,7 +54,7 @@ struct ContentView: View {
     var body: some View {
         TabBar(selection: $selection, visibility: $visibility) {
             HStack{
-                Button(action: {
+                Button {
                     switch visibility {
                     case .visible:
                         withAnimation {
@@ -65,7 +65,7 @@ struct ContentView: View {
                             visibility = .visible
                         }
                     }
-                }) {
+                } label: {
                     Text("Hide/Show TabBar")
                 }
             }
