@@ -71,11 +71,11 @@ After that you will be able to create `TabBar` instance:
 ```swift
 struct ContentView: View {
     @State private var selection: Item = .first
-        @State private var visibility: TabBarVisibility = .visible
+    @State private var visibility: TabBarVisibility = .visible
 
     var body: some View {
-                TabBar(selection: $selection, visibility: $visibility) {
-            HStack{
+        TabBar(selection: $selection, visibility: $visibility) {
+            HStack {
                 Button {
                     switch visibility {
                     case .visible:
@@ -101,7 +101,6 @@ struct ContentView: View {
         }
         .tabBar(style: CustomTabBarStyle())
         .tabItem(style: CustomTabItemStyle())
-    }
     }
 }
 ```
