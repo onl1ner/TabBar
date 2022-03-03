@@ -23,9 +23,12 @@
 
 import SwiftUI
 
+
 public struct TabBar<TabItem: Tabbable, Content: View>: View {
     
     @State private var items: [TabItem]
+    
+    @Binding private var visibility: TabBarVisibility
     
     private let selectedItem: TabBarSelection<TabItem>
     
@@ -38,6 +41,7 @@ public struct TabBar<TabItem: Tabbable, Content: View>: View {
         tabItemStyle : ItemStyle,
         tabBarStyle  : BarStyle,
         selection    : Binding<TabItem>,
+        visibility   : Binding<TabBarVisibility>,
         @ViewBuilder content: () -> Content
     ) {
         self.selectedItem = .init(selection: selection)
@@ -48,13 +52,19 @@ public struct TabBar<TabItem: Tabbable, Content: View>: View {
         self.content = content()
         
         self._items = .init(initialValue: .init())
+        self._visibility = visibility
     }
     
-    public init(selection: Binding<TabItem>, @ViewBuilder content: () -> Content) {
+    public init(
+        selection: Binding<TabItem>,
+        visibility: Binding<TabBarVisibility>,
+        @ViewBuilder content: () -> Content
+    ) {
         self.init(
             tabItemStyle : DefaultTabItemStyle(),
             tabBarStyle  : DefaultTabBarStyle(),
             selection    : selection,
+            visibility   : visibility,
             content      : content
         )
     }
@@ -87,6 +97,7 @@ public struct TabBar<TabItem: Tabbable, Content: View>: View {
                     }
                 }
                 .edgesIgnoringSafeArea(.bottom)
+                .visibility(self.visibility)
             }
         }
         .onPreferenceChange(TabBarPreferenceKey.self) { value in
@@ -103,6 +114,7 @@ extension TabBar {
             tabItemStyle : style,
             tabBarStyle  : self.tabBarStyle,
             selection    : self.selectedItem.$selection,
+            visibility   : self.$visibility,
             content      : { self.content }
         )
     }
@@ -112,6 +124,7 @@ extension TabBar {
             tabItemStyle : self.tabItemStyle,
             tabBarStyle  : style,
             selection    : self.selectedItem.$selection,
+            visibility   : self.$visibility,
             content      : { self.content }
         )
     }

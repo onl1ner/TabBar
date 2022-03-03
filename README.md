@@ -71,18 +71,37 @@ After that you will be able to create `TabBar` instance:
 ```swift
 struct ContentView: View {
     @State private var selection: Item = .first
+        @State private var visibility: TabBarVisibility = .visible
 
     var body: some View {
-        TabBar(selection: $selection) {
-            Text("First")
-                .tabItem(for: Item.first)
-
+                TabBar(selection: $selection, visibility: $visibility) {
+            HStack{
+                Button {
+                    switch visibility {
+                    case .visible:
+                        withAnimation {
+                            visibility = .invisible
+                        }
+                    case .invisible:
+                        withAnimation {
+                            visibility = .visible
+                        }
+                    }
+                } label: {
+                    Text("Hide/Show TabBar")
+                }
+            }
+            .tabItem(for: Item.first)
+            
             Text("Second")
                 .tabItem(for: Item.second)
-
+            
             Text("Third")
                 .tabItem(for: Item.third)
         }
+        .tabBar(style: CustomTabBarStyle())
+        .tabItem(style: CustomTabItemStyle())
+    }
     }
 }
 ```
