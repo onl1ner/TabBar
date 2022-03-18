@@ -23,13 +23,12 @@
 
 import SwiftUI
 
-public struct TabBarPreferenceKey<TabItem: Tabbable>: PreferenceKey {
-    
-    public static var defaultValue: [TabItem] {
+struct TabBarPreferenceKey<TabItem: Tabbable>: PreferenceKey {
+    static var defaultValue: [TabItem] {
         return .init()
     }
     
-    public static func reduce(value: inout [TabItem], nextValue: () -> [TabItem]) {
+    static func reduce(value: inout [TabItem], nextValue: () -> [TabItem]) {
         value.append(contentsOf: nextValue())
     }
 }

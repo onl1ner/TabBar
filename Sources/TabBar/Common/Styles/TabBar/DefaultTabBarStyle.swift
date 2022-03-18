@@ -23,6 +23,12 @@
 
 import SwiftUI
 
+/**
+ Default implementation of the `TabBarStyle` protocol.
+ 
+ This style replicates the default `iOS` style of the
+ bar of `UITabBar` and used in `TabBar` by default.
+ */
 public struct DefaultTabBarStyle: TabBarStyle {
     
     public func tabBar(with geometry: GeometryProxy, itemsContainer: @escaping () -> AnyView) -> some View {

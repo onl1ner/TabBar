@@ -23,8 +23,14 @@
 
 import SwiftUI
 
+/**
+ Type eraser which is used to represent
+ any style of `TabBar's` item.
+ 
+ Use this type only when there is a necessity
+ to represent any item style.
+ */
 public struct AnyTabItemStyle: TabItemStyle {
-    
     private let _makeTabItem: (String, String, Bool) -> AnyView
     
     public init<TabItem: TabItemStyle>(itemStyle: TabItem) {

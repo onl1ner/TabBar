@@ -23,7 +23,27 @@
 
 import SwiftUI
 
-
+/**
+ `TabBar` – highly customizable tab bar for your SwiftUI application.
+ 
+ By using this component you will be able to add a view that
+ switches between multiple child views using interactive user
+ interface elements.
+ 
+ `TabBar` can be easily customized. You have to conform
+ to `TabBarStyle` and `TabItemStyle` to customize bar
+ and item respectively. To apply customization you have to inject
+ them to tab bar using `tabBar(style:)` for bar
+ and `tabItem(style:)` for item.
+ 
+ Usage:
+ 
+ ```
+ TabBar(selection: $selection) { }
+    .tabBar(style: CustomTabBarStyle())
+    .tabItem(style: CustomTabItemStyle())
+ ```
+ */
 public struct TabBar<TabItem: Tabbable, Content: View>: View {
     
     @State private var items: [TabItem]
@@ -55,6 +75,14 @@ public struct TabBar<TabItem: Tabbable, Content: View>: View {
         self._visibility = visibility
     }
     
+    /**
+     Creates a tab bar components with given
+     bindings to selection and visibility.
+     
+     Provided views in the `content` closure
+     will be recognized as a tab bar item only
+     if they have `tabItem(for:)` applied on them.
+     */
     public init(
         selection: Binding<TabItem>,
         visibility: Binding<TabBarVisibility>,
@@ -108,7 +136,12 @@ public struct TabBar<TabItem: Tabbable, Content: View>: View {
 }
 
 extension TabBar {
-    
+    /**
+     A function that is used to apply tab item's style on `TabBar`.
+     
+     By passing the instance of object that conforms to `TabItemStyle` protocol
+     `TabBar` will use this style for its items.
+     */
     public func tabItem<ItemStyle: TabItemStyle>(style: ItemStyle) -> Self {
         return .init(
             tabItemStyle : style,
@@ -119,6 +152,12 @@ extension TabBar {
         )
     }
     
+    /**
+     A function that is used to apply tab bar's style on `TabBar`.
+     
+     By passing the instance of object that conforms to `TabBarStyle` protocol
+     `TabBar` will apply this style to its bar.
+     */
     public func tabBar<BarStyle: TabBarStyle>(style: BarStyle) -> Self {
         return .init(
             tabItemStyle : self.tabItemStyle,

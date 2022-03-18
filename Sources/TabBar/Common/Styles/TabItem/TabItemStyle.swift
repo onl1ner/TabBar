@@ -23,16 +23,22 @@
 
 import SwiftUI
 
+/**
+ A type that represents tab item style.
+ 
+ This type is used by `TabBar` to apply custom
+ styles to its items. You can easily pass your
+ custom item style to `TabBar` by
+ using `tabItem(style:)` function.
+ */
 public protocol TabItemStyle {
-    associatedtype Content  : View
+    associatedtype Content : View
     
     func tabItem(icon: String, title: String, isSelected: Bool) -> Content
 }
 
 extension TabItemStyle {
-    
-    public func tabItemErased(icon: String, title: String, isSelected: Bool) -> AnyView {
+    func tabItemErased(icon: String, title: String, isSelected: Bool) -> AnyView {
         return .init(self.tabItem(icon: icon, title: title, isSelected: isSelected))
     }
-    
 }

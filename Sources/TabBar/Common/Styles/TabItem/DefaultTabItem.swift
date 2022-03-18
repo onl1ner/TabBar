@@ -23,8 +23,14 @@
 
 import SwiftUI
 
+/**
+ Default implementation of the `TabItemStyle` protocol.
+ 
+ This style replicates the default `iOS` style of the
+ items of `UITabBar` and used in `TabBar` by default.
+ */
 public struct DefaultTabItemStyle: TabItemStyle {
-    
+
     @ViewBuilder
     public func tabItem(icon: String, title: String, isSelected: Bool) -> some View {
         let color: Color = isSelected ? .accentColor : .gray
