@@ -43,6 +43,13 @@ public enum TabBarVisibility: CaseIterable {
      */
     case invisible
     
+    /**
+     A convenience function that is used to quickly switch
+     between the visibility states.
+     
+     Use this function when you need to toggle current
+     state: `visible` will become `invisible` and vice versa.
+     */
     public mutating func toggle() {
         switch self {
         case .visible:
