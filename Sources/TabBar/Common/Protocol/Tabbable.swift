@@ -23,7 +23,13 @@
 
 import Foundation
 
+/**
+ A type that represents an item of your `TabBar` component.
+ */
 public protocol Tabbable: Hashable {
+    /// Icon of `TabBar's` item.
     var icon: String { get }
+    
+    /// Title of `TabBar's` item.
     var title: String { get }
 }

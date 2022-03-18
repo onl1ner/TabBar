@@ -75,23 +75,8 @@ struct ContentView: View {
 
     var body: some View {
         TabBar(selection: $selection, visibility: $visibility) {
-            HStack {
-                Button {
-                    switch visibility {
-                    case .visible:
-                        withAnimation {
-                            visibility = .invisible
-                        }
-                    case .invisible:
-                        withAnimation {
-                            visibility = .visible
-                        }
-                    }
-                } label: {
-                    Text("Hide/Show TabBar")
-                }
-            }
-            .tabItem(for: Item.first)
+            Text("First")
+                .tabItem(for: Item.first)
             
             Text("Second")
                 .tabItem(for: Item.second)

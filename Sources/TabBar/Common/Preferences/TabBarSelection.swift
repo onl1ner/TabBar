@@ -23,11 +23,10 @@
 
 import SwiftUI
 
-public class TabBarSelection<TabItem: Tabbable>: ObservableObject {
+class TabBarSelection<TabItem: Tabbable>: ObservableObject {
+    @Binding var selection: TabItem
     
-    @Binding public var selection: TabItem
-    
-    public init(selection: Binding<TabItem>) {
+    init(selection: Binding<TabItem>) {
         self._selection = selection
     }
 }

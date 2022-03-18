@@ -23,13 +23,12 @@
 
 import SwiftUI
 
-public struct TabBarViewModifier<TabItem: Tabbable>: ViewModifier {
-    
+struct TabBarViewModifier<TabItem: Tabbable>: ViewModifier {
     @EnvironmentObject private var selectionObject: TabBarSelection<TabItem>
     
-    public let item: TabItem
+    let item: TabItem
     
-    public func body(content: Content) -> some View {
+    func body(content: Content) -> some View {
         Group {
             if self.item == self.selectionObject.selection {
                 content
@@ -42,9 +41,13 @@ public struct TabBarViewModifier<TabItem: Tabbable>: ViewModifier {
 }
 
 extension View {
-    
+    /**
+     A function that is used to associated view with the passed item.
+     
+     Use this function to associate view with the specific item
+     of the `TabBar`.
+     */
     public func tabItem<TabItem: Tabbable>(for item: TabItem) -> some View {
         return self.modifier(TabBarViewModifier(item: item))
     }
-    
 }
