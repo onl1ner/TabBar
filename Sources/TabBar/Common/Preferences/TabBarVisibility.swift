@@ -42,4 +42,13 @@ public enum TabBarVisibility: CaseIterable {
      be hidden from the user.
      */
     case invisible
+    
+    public mutating func toggle() {
+        switch self {
+        case .visible:
+            self = .invisible
+        case .invisible:
+            self = .visible
+        }
+    }
 }
