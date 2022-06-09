@@ -46,34 +46,15 @@ import SwiftUI
  */
 public struct TabBar<TabItem: Tabbable, Content: View>: View {
     
+    private let selectedItem: TabBarSelection<TabItem>
+    private let content: Content
+    
+    private var tabItemStyle : AnyTabItemStyle
+    private var tabBarStyle  : AnyTabBarStyle
+    
     @State private var items: [TabItem]
     
     @Binding private var visibility: TabBarVisibility
-    
-    private let selectedItem: TabBarSelection<TabItem>
-    
-    private let tabItemStyle : AnyTabItemStyle
-    private let tabBarStyle  : AnyTabBarStyle
-    
-    private let content: Content
-    
-    private init<ItemStyle: TabItemStyle, BarStyle: TabBarStyle>(
-        tabItemStyle : ItemStyle,
-        tabBarStyle  : BarStyle,
-        selection    : Binding<TabItem>,
-        visibility   : Binding<TabBarVisibility>,
-        @ViewBuilder content: () -> Content
-    ) {
-        self.selectedItem = .init(selection: selection)
-        
-        self.tabItemStyle = .init(itemStyle: tabItemStyle)
-        self.tabBarStyle  = .init(barStyle: tabBarStyle)
-        
-        self.content = content()
-        
-        self._items = .init(initialValue: .init())
-        self._visibility = visibility
-    }
     
     /**
      Creates a tab bar components with given
@@ -85,16 +66,17 @@ public struct TabBar<TabItem: Tabbable, Content: View>: View {
      */
     public init(
         selection: Binding<TabItem>,
-        visibility: Binding<TabBarVisibility>,
+        visibility: Binding<TabBarVisibility> = .constant(.visible),
         @ViewBuilder content: () -> Content
     ) {
-        self.init(
-            tabItemStyle : DefaultTabItemStyle(),
-            tabBarStyle  : DefaultTabBarStyle(),
-            selection    : selection,
-            visibility   : visibility,
-            content      : content
-        )
+        self.tabItemStyle = .init(itemStyle: DefaultTabItemStyle())
+        self.tabBarStyle = .init(barStyle: DefaultTabBarStyle())
+        
+        self.selectedItem = .init(selection: selection)
+        self.content = content()
+        
+        self._items = .init(initialValue: .init())
+        self._visibility = visibility
     }
     
     private var tabItems: some View {
@@ -139,32 +121,36 @@ extension TabBar {
     /**
      A function that is used to apply tab item's style on `TabBar`.
      
-     By passing the instance of object that conforms to `TabItemStyle` protocol
-     `TabBar` will use this style for its items.
+     By passing the instance of object that conforms to `TabItemStyle`
+     protocol `TabBar` will use this style for its items.
+     
+     - Parameters:
+        - style: Item style that should be applied to `TabBar`.
+     
+     - Returns:
+        `TabBar` with applied item style.
      */
     public func tabItem<ItemStyle: TabItemStyle>(style: ItemStyle) -> Self {
-        return .init(
-            tabItemStyle : style,
-            tabBarStyle  : self.tabBarStyle,
-            selection    : self.selectedItem.$selection,
-            visibility   : self.$visibility,
-            content      : { self.content }
-        )
+        var _self = self
+        _self.tabItemStyle = .init(itemStyle: style)
+        return _self
     }
     
     /**
      A function that is used to apply tab bar's style on `TabBar`.
      
-     By passing the instance of object that conforms to `TabBarStyle` protocol
-     `TabBar` will apply this style to its bar.
+     By passing the instance of object that conforms to `TabBarStyle`
+     protocol `TabBar` will apply this style to its bar.
+     
+     - Parameters:
+        - style: Bar style that should be applied to `TabBar`.
+     
+     - Returns:
+        `TabBar` with applied bar style.
      */
     public func tabBar<BarStyle: TabBarStyle>(style: BarStyle) -> Self {
-        return .init(
-            tabItemStyle : self.tabItemStyle,
-            tabBarStyle  : style,
-            selection    : self.selectedItem.$selection,
-            visibility   : self.$visibility,
-            content      : { self.content }
-        )
+        var _self = self
+        _self.tabBarStyle = .init(barStyle: style)
+        return _self
     }
 }
