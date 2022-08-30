@@ -32,13 +32,13 @@ import SwiftUI
  using `tabItem(style:)` function.
  */
 public protocol TabItemStyle {
-    associatedtype Content : View
+    associatedtype Content: View
     
-    func tabItem(icon: String, title: String, isSelected: Bool) -> Content
+    func tabItem(icon: Image, title: String, isSelected: Bool) -> Content
 }
 
 extension TabItemStyle {
-    func tabItemErased(icon: String, title: String, isSelected: Bool) -> AnyView {
+    func tabItemErased(icon: Image, title: String, isSelected: Bool) -> AnyView {
         return .init(self.tabItem(icon: icon, title: title, isSelected: isSelected))
     }
 }

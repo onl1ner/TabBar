@@ -21,15 +21,21 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //  SOFTWARE.
 
-import Foundation
+import SwiftUI
 
 /**
  A type that represents an item of your `TabBar` component.
  */
 public protocol Tabbable: Hashable {
     /// Icon of `TabBar's` item.
-    var icon: String { get }
+    var icon: Image { get }
     
     /// Title of `TabBar's` item.
     var title: String { get }
+}
+
+extension Tabbable {
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(self.title)
+    }
 }
