@@ -26,50 +26,60 @@ import TabBar
 
 struct ContentView: View {
     
-    private enum Item: Int, Tabbable {
-        case first = 0
-        case second
-        case third
+    private enum Item: Tabbable {
+        case home
+        case search
+        case profile
         
-        var icon: String {
+        var icon: Image {
             switch self {
-                case .first: return "house"
-                case .second: return "magnifyingglass"
-                case .third: return "person"
+            case .home:
+                return Image(systemName: "house")
+            case .search:
+                return Image(systemName: "magnifyingglass")
+            case .profile:
+                return Image(systemName: "person")
             }
         }
         
         var title: String {
             switch self {
-                case .first: return "First"
-                case .second: return "Second"
-                case .third: return "Third"
+            case .home:
+                return "First"
+            case .search:
+                return "Second"
+            case .profile:
+                return "Third"
             }
         }
     }
     
-    @State private var selection: Item = .first
+    @State private var selection: Item = .home
     @State private var visibility: TabBarVisibility = .visible
     
     var body: some View {
         TabBar(selection: $selection, visibility: $visibility) {
             Button {
-                withAnimation {
+                withAnimation(.spring()) {
                     visibility.toggle()
                 }
             } label: {
                 Text("Hide/Show TabBar")
             }
-            .tabItem(for: Item.first)
+            .tabItem(for: Item.home)
             
             Text("Second")
-                .tabItem(for: Item.second)
+                .tabItem(for: Item.search)
             
             Text("Third")
-                .tabItem(for: Item.third)
+                .tabItem(for: Item.profile)
         }
-        .tabBar(style: CustomTabBarStyle())
-        .tabItem(style: CustomTabItemStyle())
+//        Uncomment these two lines below to apply
+//        custom tab bar and tab item styles to
+//        the tab bar.
+//
+//        .tabBar(style: CustomTabBarStyle())
+//        .tabItem(style: CustomTabItemStyle())
     }
 }
 

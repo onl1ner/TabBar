@@ -26,7 +26,7 @@ import TabBar
 
 struct CustomTabItemStyle: TabItemStyle {
     
-    public func tabItem(icon: String, title: String, isSelected: Bool) -> some View {
+    public func tabItem(icon: Image, title: String, isSelected: Bool) -> some View {
         ZStack {
             if isSelected {
                 Circle()
@@ -34,7 +34,7 @@ struct CustomTabItemStyle: TabItemStyle {
                     .frame(width: 40.0, height: 40.0)
             }
             
-            Image(systemName: icon)
+            icon
                 .foregroundColor(isSelected ? .white : Color("color.tab.item.foreground"))
                 .frame(width: 32.0, height: 32.0)
         }
