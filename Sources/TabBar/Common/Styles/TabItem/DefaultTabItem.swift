@@ -30,11 +30,7 @@ import SwiftUI
  items of `UITabBar` and used in `TabBar` by default.
  */
 public struct DefaultTabItemStyle: TabItemStyle {
-
-    @ViewBuilder
-    public func tabItem(icon: String, title: String, isSelected: Bool) -> some View {
-        let color: Color = isSelected ? .accentColor : .gray
-        
+    public func tabItem(icon: String, selectedIcon: String, title: String, isSelected: Bool) -> some View {
         VStack(spacing: 5.0) {
             Image(systemName: icon)
                 .renderingMode(.template)
@@ -42,7 +38,6 @@ public struct DefaultTabItemStyle: TabItemStyle {
             Text(title)
                 .font(.system(size: 10.0, weight: .medium))
         }
-        .foregroundColor(color)
+        .foregroundColor(isSelected ? .accentColor : .gray)
     }
-    
 }
