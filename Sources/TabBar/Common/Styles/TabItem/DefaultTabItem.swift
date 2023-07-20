@@ -30,7 +30,7 @@ import SwiftUI
  items of `UITabBar` and used in `TabBar` by default.
  */
 public struct DefaultTabItemStyle: TabItemStyle {
-    public func tabItem(icon: String, selectedIcon: String, title: String, isSelected: Bool) -> some View {
+    public func tabItem(icon: String, selectedIcon: String, title: String, isSelected: Bool, badgeNumber: Int?) -> some View {
         VStack(spacing: 5.0) {
             Image(systemName: icon)
                 .renderingMode(.template)

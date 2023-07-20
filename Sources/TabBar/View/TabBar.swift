@@ -52,6 +52,8 @@ public struct TabBar<TabItem: Tabbable, Content: View>: View {
     private var tabItemStyle : AnyTabItemStyle
     private var tabBarStyle  : AnyTabBarStyle
     
+    private var badgeNumberForTabItem: (TabItem) -> Int?
+    
     @State private var items: [TabItem]
     
     @Binding private var visibility: TabBarVisibility
@@ -67,10 +69,13 @@ public struct TabBar<TabItem: Tabbable, Content: View>: View {
     public init(
         selection: Binding<TabItem>,
         visibility: Binding<TabBarVisibility> = .constant(.visible),
+        badgeNumberForTabItem: @escaping (TabItem) -> Int? = { _ in nil },
         @ViewBuilder content: () -> Content
     ) {
         self.tabItemStyle = .init(itemStyle: DefaultTabItemStyle())
         self.tabBarStyle = .init(barStyle: DefaultTabBarStyle())
+        
+        self.badgeNumberForTabItem = badgeNumberForTabItem
         
         self.selectedItem = .init(selection: selection)
         self.content = content()
@@ -86,7 +91,8 @@ public struct TabBar<TabItem: Tabbable, Content: View>: View {
                     icon: item.icon,
                     selectedIcon: item.selectedIcon,
                     title: item.title,
-                    isSelected: self.selectedItem.selection == item
+                    isSelected: self.selectedItem.selection == item,
+                    badgeNumber: badgeNumberForTabItem(item)
                 )
                 .onTapGesture {
                     self.selectedItem.selection = item
