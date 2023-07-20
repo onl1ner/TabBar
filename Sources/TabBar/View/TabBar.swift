@@ -88,9 +88,7 @@ public struct TabBar<TabItem: Tabbable, Content: View>: View {
         HStack {
             ForEach(self.items, id: \.self) { item in
                 self.tabItemStyle.tabItem(
-                    icon: item.icon,
-                    selectedIcon: item.selectedIcon,
-                    title: item.title,
+                    item,
                     isSelected: self.selectedItem.selection == item,
                     badgeNumber: badgeNumberForTabItem(item)
                 )
