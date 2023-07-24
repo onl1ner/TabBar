@@ -85,13 +85,14 @@ public struct TabBar<TabItem: Tabbable, Content: View>: View {
     private var tabItems: some View {
         HStack {
             ForEach(Array(zip(self.items, self.badgeNumbers)), id: \.0) { element in
+                let (item, badgeNumber) = element
                 self.tabItemStyle.tabItem(
-                    element.0,
-                    isSelected: self.selectedItem.selection == element.0,
-                    badgeNumber: element.1
+                    item,
+                    isSelected: self.selectedItem.selection == item,
+                    badgeNumber: badgeNumber
                 )
                 .onTapGesture {
-                    self.selectedItem.selection = element.0
+                    self.selectedItem.selection = item
                     self.selectedItem.objectWillChange.send()
                 }
             }
