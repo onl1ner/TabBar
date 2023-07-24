@@ -27,6 +27,7 @@ struct TabBarViewModifier<TabItem: Tabbable>: ViewModifier {
     @EnvironmentObject private var selectionObject: TabBarSelection<TabItem>
     
     let item: TabItem
+    let badgeNumber: Int?
     
     func body(content: Content) -> some View {
         Group {
@@ -36,7 +37,8 @@ struct TabBarViewModifier<TabItem: Tabbable>: ViewModifier {
                 Color.clear
             }
         }
-        .preference(key: TabBarPreferenceKey.self, value: [self.item])
+        .preference(key: TabBarItemPreferenceKey.self, value: [self.item])
+        .preference(key: TabBarBadgePreferenceKey.self, value: [self.badgeNumber])
     }
 }
 
@@ -47,7 +49,7 @@ extension View {
      Use this function to associate view with the specific item
      of the `TabBar`.
      */
-    public func tabItem<TabItem: Tabbable>(for item: TabItem) -> some View {
-        return self.modifier(TabBarViewModifier(item: item))
+    public func tabItem<TabItem: Tabbable>(for item: TabItem, badgeNumber: Int? = nil) -> some View {
+        return self.modifier(TabBarViewModifier(item: item, badgeNumber: badgeNumber))
     }
 }

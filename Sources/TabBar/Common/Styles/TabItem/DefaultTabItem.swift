@@ -30,12 +30,12 @@ import SwiftUI
  items of `UITabBar` and used in `TabBar` by default.
  */
 public struct DefaultTabItemStyle: TabItemStyle {
-    public func tabItem(icon: String, selectedIcon: String, title: String, isSelected: Bool) -> some View {
+    public func tabItem(_ tabItem: any Tabbable, isSelected: Bool, badgeNumber: Int?) -> some View {
         VStack(spacing: 5.0) {
-            Image(systemName: icon)
+            Image(systemName: tabItem.icon)
                 .renderingMode(.template)
             
-            Text(title)
+            Text(tabItem.title)
                 .font(.system(size: 10.0, weight: .medium))
         }
         .foregroundColor(isSelected ? .accentColor : .gray)

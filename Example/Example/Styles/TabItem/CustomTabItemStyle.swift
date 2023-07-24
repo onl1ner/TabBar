@@ -26,7 +26,7 @@ import TabBar
 
 struct CustomTabItemStyle: TabItemStyle {
     
-    public func tabItem(icon: String, title: String, isSelected: Bool) -> some View {
+    public func tabItem(_ tabItem: any Tabbable, isSelected: Bool, badgeNumber: Int?) -> some View {
         ZStack {
             if isSelected {
                 Circle()
@@ -34,9 +34,21 @@ struct CustomTabItemStyle: TabItemStyle {
                     .frame(width: 40.0, height: 40.0)
             }
             
-            Image(systemName: icon)
+            Image(systemName: tabItem.icon)
                 .foregroundColor(isSelected ? .white : Color("color.tab.item.foreground"))
                 .frame(width: 32.0, height: 32.0)
+            
+            if let badgeNumber = badgeNumber, badgeNumber > 0 {
+                Text("\(badgeNumber < 100 ? String(badgeNumber) : "99+")")
+                    .font(.callout)
+                    .foregroundColor(.white)
+                    .padding(.horizontal, 8)
+                    .background(
+                        Capsule()
+                            .foregroundColor(.red)
+                    )
+                    .offset(x: 26, y: -10)
+            }
         }
         .padding(.vertical, 8.0)
     }

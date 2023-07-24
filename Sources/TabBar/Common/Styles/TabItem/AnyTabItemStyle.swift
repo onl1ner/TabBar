@@ -31,13 +31,13 @@ import SwiftUI
  to represent any item style.
  */
 public struct AnyTabItemStyle: TabItemStyle {
-    private let _makeTabItem: (String, String, String, Bool) -> AnyView
+    private let _makeTabItem: (any Tabbable, Bool, Int?) -> AnyView
     
     public init<TabItem: TabItemStyle>(itemStyle: TabItem) {
-        self._makeTabItem = itemStyle.tabItemErased(icon:selectedIcon:title:isSelected:)
+        self._makeTabItem = itemStyle.tabItemErased(_:isSelected:badgeNumber:)
     }
     
-    public func tabItem(icon: String, selectedIcon: String, title: String, isSelected: Bool) -> some View {
-        return self._makeTabItem(icon, selectedIcon, title, isSelected)
+    public func tabItem(_ tabItem: any Tabbable, isSelected: Bool, badgeNumber: Int?) -> some View {
+        return self._makeTabItem(tabItem, isSelected, badgeNumber)
     }
 }

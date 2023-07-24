@@ -50,9 +50,13 @@ struct ContentView: View {
     
     @State private var selection: Item = .first
     @State private var visibility: TabBarVisibility = .visible
+    @State private var badgeNumberAtThird = 0
     
     var body: some View {
-        TabBar(selection: $selection, visibility: $visibility) {
+        TabBar(
+            selection: $selection,
+            visibility: $visibility
+        ) {
             Button {
                 withAnimation {
                     visibility.toggle()
@@ -65,8 +69,22 @@ struct ContentView: View {
             Text("Second")
                 .tabItem(for: Item.second)
             
-            Text("Third")
-                .tabItem(for: Item.third)
+            VStack(spacing: 40) {
+                Text("Third")
+                
+                Button {
+                    badgeNumberAtThird += 1
+                } label: {
+                    Text("Increase Badge Number")
+                }
+                
+                Button {
+                    badgeNumberAtThird = 0
+                } label: {
+                    Text("Reset Badge Number")
+                }
+            }
+            .tabItem(for: Item.third, badgeNumber: badgeNumberAtThird)
         }
         .tabBar(style: CustomTabBarStyle())
         .tabItem(style: CustomTabItemStyle())

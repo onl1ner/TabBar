@@ -53,6 +53,7 @@ public struct TabBar<TabItem: Tabbable, Content: View>: View {
     private var tabBarStyle  : AnyTabBarStyle
     
     @State private var items: [TabItem]
+    @State private var badgeNumbers: [Int?]
     
     @Binding private var visibility: TabBarVisibility
     
@@ -76,17 +77,19 @@ public struct TabBar<TabItem: Tabbable, Content: View>: View {
         self.content = content()
         
         self._items = .init(initialValue: .init())
+        self._badgeNumbers = .init(initialValue: .init())
+        
         self._visibility = visibility
     }
     
     private var tabItems: some View {
         HStack {
-            ForEach(self.items, id: \.self) { item in
+            ForEach(Array(zip(self.items, self.badgeNumbers)), id: \.0) { element in
+                let (item, badgeNumber) = element
                 self.tabItemStyle.tabItem(
-                    icon: item.icon,
-                    selectedIcon: item.selectedIcon,
-                    title: item.title,
-                    isSelected: self.selectedItem.selection == item
+                    item,
+                    isSelected: self.selectedItem.selection == item,
+                    badgeNumber: badgeNumber
                 )
                 .onTapGesture {
                     self.selectedItem.selection = item
@@ -115,8 +118,11 @@ public struct TabBar<TabItem: Tabbable, Content: View>: View {
                 .visibility(self.visibility)
             }
         }
-        .onPreferenceChange(TabBarPreferenceKey.self) { value in
+        .onPreferenceChange(TabBarItemPreferenceKey.self) { value in
             self.items = value
+        }
+        .onPreferenceChange(TabBarBadgePreferenceKey.self) { value in
+            self.badgeNumbers = value            
         }
     }
     
