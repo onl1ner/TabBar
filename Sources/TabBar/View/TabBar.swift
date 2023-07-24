@@ -68,7 +68,6 @@ public struct TabBar<TabItem: Tabbable, Content: View>: View {
     public init(
         selection: Binding<TabItem>,
         visibility: Binding<TabBarVisibility> = .constant(.visible),
-        badgeNumberForTabItem: @escaping (TabItem) -> Int? = { _ in nil },
         @ViewBuilder content: () -> Content
     ) {
         self.tabItemStyle = .init(itemStyle: DefaultTabItemStyle())
