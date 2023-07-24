@@ -52,9 +52,8 @@ public struct TabBar<TabItem: Tabbable, Content: View>: View {
     private var tabItemStyle : AnyTabItemStyle
     private var tabBarStyle  : AnyTabBarStyle
     
-    private var badgeNumberForTabItem: (TabItem) -> Int?
-    
     @State private var items: [TabItem]
+    @State private var badgeNumbers: [Int?]
     
     @Binding private var visibility: TabBarVisibility
     
@@ -75,25 +74,25 @@ public struct TabBar<TabItem: Tabbable, Content: View>: View {
         self.tabItemStyle = .init(itemStyle: DefaultTabItemStyle())
         self.tabBarStyle = .init(barStyle: DefaultTabBarStyle())
         
-        self.badgeNumberForTabItem = badgeNumberForTabItem
-        
         self.selectedItem = .init(selection: selection)
         self.content = content()
         
         self._items = .init(initialValue: .init())
+        self._badgeNumbers = .init(initialValue: .init())
+        
         self._visibility = visibility
     }
     
     private var tabItems: some View {
         HStack {
-            ForEach(self.items, id: \.self) { item in
+            ForEach(Array(zip(self.items, self.badgeNumbers)), id: \.0) { element in
                 self.tabItemStyle.tabItem(
-                    item,
-                    isSelected: self.selectedItem.selection == item,
-                    badgeNumber: badgeNumberForTabItem(item)
+                    element.0,
+                    isSelected: self.selectedItem.selection == element.0,
+                    badgeNumber: element.1
                 )
                 .onTapGesture {
-                    self.selectedItem.selection = item
+                    self.selectedItem.selection = element.0
                     self.selectedItem.objectWillChange.send()
                 }
             }
@@ -119,8 +118,11 @@ public struct TabBar<TabItem: Tabbable, Content: View>: View {
                 .visibility(self.visibility)
             }
         }
-        .onPreferenceChange(TabBarPreferenceKey.self) { value in
+        .onPreferenceChange(TabBarItemPreferenceKey.self) { value in
             self.items = value
+        }
+        .onPreferenceChange(TabBarBadgePreferenceKey.self) { value in
+            self.badgeNumbers = value            
         }
     }
     

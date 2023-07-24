@@ -52,20 +52,10 @@ struct ContentView: View {
     @State private var visibility: TabBarVisibility = .visible
     @State private var badgeNumberAtThird = 0
     
-    private func badgeNumber(for tabItem: Item) -> Int? {
-        switch tabItem {
-        case Item.third:
-            return badgeNumberAtThird
-        default:
-            return nil
-        }
-    }
-    
     var body: some View {
         TabBar(
             selection: $selection,
-            visibility: $visibility,
-            badgeNumberForTabItem: badgeNumber(for:)
+            visibility: $visibility
         ) {
             Button {
                 withAnimation {
@@ -94,7 +84,7 @@ struct ContentView: View {
                     Text("Reset Badge Number")
                 }
             }
-            .tabItem(for: Item.third)
+            .tabItem(for: Item.third, badgeNumber: badgeNumberAtThird)
         }
         .tabBar(style: CustomTabBarStyle())
         .tabItem(style: CustomTabItemStyle())

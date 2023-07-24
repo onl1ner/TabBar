@@ -23,7 +23,7 @@
 
 import SwiftUI
 
-struct TabBarPreferenceKey<TabItem: Tabbable>: PreferenceKey {
+struct TabBarItemPreferenceKey<TabItem: Tabbable>: PreferenceKey {
     static var defaultValue: [TabItem] {
         return .init()
     }
