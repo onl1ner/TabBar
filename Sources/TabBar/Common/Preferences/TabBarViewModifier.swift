@@ -25,29 +25,31 @@ import SwiftUI
 
 struct TabBarViewModifier<TabItem: Tabbable>: ViewModifier {
     @EnvironmentObject private var selectionObject: TabBarSelection<TabItem>
-    
+
     let item: TabItem
-    
+
     func body(content: Content) -> some View {
         Group {
-            if self.item == self.selectionObject.selection {
+            if selectionObject.loadedItems.contains(item) {
                 content
+                    .opacity(item == selectionObject.selection ? 1 : 0)
             } else {
                 Color.clear
             }
         }
-        .preference(key: TabBarPreferenceKey.self, value: [self.item])
+        .environmentObject(selectionObject)
+        .preference(key: TabBarPreferenceKey.self, value: [item])
     }
 }
 
-extension View {
+public extension View {
     /**
      A function that is used to associated view with the passed item.
-     
+
      Use this function to associate view with the specific item
      of the `TabBar`.
      */
-    public func tabItem<TabItem: Tabbable>(for item: TabItem) -> some View {
-        return self.modifier(TabBarViewModifier(item: item))
+    func tabItem(for item: some Tabbable) -> some View {
+        modifier(TabBarViewModifier(item: item))
     }
 }

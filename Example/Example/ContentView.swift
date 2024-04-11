@@ -25,32 +25,31 @@ import SwiftUI
 import TabBar
 
 struct ContentView: View {
-    
     private enum Item: Int, Tabbable {
         case first = 0
         case second
         case third
-        
+
         var icon: String {
             switch self {
-                case .first: return "house"
-                case .second: return "magnifyingglass"
-                case .third: return "person"
+            case .first: "house"
+            case .second: "magnifyingglass"
+            case .third: "person"
             }
         }
-        
+
         var title: String {
             switch self {
-                case .first: return "First"
-                case .second: return "Second"
-                case .third: return "Third"
+            case .first: "First"
+            case .second: "Second"
+            case .third: "Third"
             }
         }
     }
-    
+
     @State private var selection: Item = .first
     @State private var visibility: TabBarVisibility = .visible
-    
+
     var body: some View {
         TabBar(selection: $selection, visibility: $visibility) {
             Button {
@@ -61,15 +60,32 @@ struct ContentView: View {
                 Text("Hide/Show TabBar")
             }
             .tabItem(for: Item.first)
-            
-            Text("Second")
+
+            TextWrapper()
                 .tabItem(for: Item.second)
-            
-            Text("Third")
+
+            TextWrapper()
                 .tabItem(for: Item.third)
         }
         .tabBar(style: CustomTabBarStyle())
         .tabItem(style: CustomTabItemStyle())
+        .onChange(of: selection) { newValue in
+            print("selection changed:", newValue)
+        }
+    }
+}
+
+struct TextWrapper: View {
+    @State var string: String = UUID().uuidString
+
+    var body: some View {
+        Text(string)
+            .onTapGesture {
+                string = UUID().uuidString
+            }
+            .onAppear(perform: {
+                print("onAppear:", string)
+            })
     }
 }
 

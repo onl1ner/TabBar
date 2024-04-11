@@ -21,12 +21,35 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //  SOFTWARE.
 
+import Combine
 import SwiftUI
 
 class TabBarSelection<TabItem: Tabbable>: ObservableObject {
-    @Binding var selection: TabItem
-    
+    private var cancelSet = Set<AnyCancellable>()
+
+    @Published var selection: TabItem {
+        didSet {
+            loadedItems.insert(selection)
+        }
+    }
+
+    @Published var items: [TabItem] = [] {
+        didSet {
+            loadedItems = [selection]
+        }
+    }
+
+    @Published var loadedItems = Set<TabItem>()
+
     init(selection: Binding<TabItem>) {
-        self._selection = selection
+        self.selection = selection.wrappedValue
+        loadedItems.insert(selection.wrappedValue)
+
+        $selection.sink { item in
+            DispatchQueue.main.async {
+                selection.wrappedValue = item
+            }
+        }
+        .store(in: &cancelSet)
     }
 }

@@ -25,19 +25,19 @@ import SwiftUI
 
 /**
  `TabBar` – highly customizable tab bar for your SwiftUI application.
- 
+
  By using this component you will be able to add a view that
  switches between multiple child views using interactive user
  interface elements.
- 
+
  `TabBar` can be easily customized. You have to conform
  to `TabBarStyle` and `TabItemStyle` to customize bar
  and item respectively. To apply customization you have to inject
  them to tab bar using `tabBar(style:)` for bar
  and `tabItem(style:)` for item.
- 
+
  Usage:
- 
+
  ```
  TabBar(selection: $selection) { }
     .tabBar(style: CustomTabBarStyle())
@@ -45,21 +45,18 @@ import SwiftUI
  ```
  */
 public struct TabBar<TabItem: Tabbable, Content: View>: View {
-    
-    private let selectedItem: TabBarSelection<TabItem>
-    private let content: Content
-    
-    private var tabItemStyle : AnyTabItemStyle
-    private var tabBarStyle  : AnyTabBarStyle
-    
-    @State private var items: [TabItem]
-    
+    @StateObject private var selectedItem: TabBarSelection<TabItem>
+    private let content: () -> Content
+
+    private var tabItemStyle: AnyTabItemStyle
+    private var tabBarStyle: AnyTabBarStyle
+
     @Binding private var visibility: TabBarVisibility
-    
+
     /**
      Creates a tab bar components with given
      bindings to selection and visibility.
-     
+
      Provided views in the `content` closure
      will be recognized as a tab bar item only
      if they have `tabItem(for:)` applied on them.
@@ -67,93 +64,91 @@ public struct TabBar<TabItem: Tabbable, Content: View>: View {
     public init(
         selection: Binding<TabItem>,
         visibility: Binding<TabBarVisibility> = .constant(.visible),
-        @ViewBuilder content: () -> Content
+        @ViewBuilder content: @escaping () -> Content
     ) {
-        self.tabItemStyle = .init(itemStyle: DefaultTabItemStyle())
-        self.tabBarStyle = .init(barStyle: DefaultTabBarStyle())
-        
-        self.selectedItem = .init(selection: selection)
-        self.content = content()
-        
-        self._items = .init(initialValue: .init())
-        self._visibility = visibility
+        tabItemStyle = .init(itemStyle: DefaultTabItemStyle())
+        tabBarStyle = .init(barStyle: DefaultTabBarStyle())
+
+        _selectedItem = .init(wrappedValue: .init(selection: selection))
+        self.content = content
+        _visibility = visibility
     }
-    
+
     private var tabItems: some View {
         HStack {
-            ForEach(self.items, id: \.self) { item in
-                self.tabItemStyle.tabItem(
+            ForEach(selectedItem.items, id: \.self) { item in
+                tabItemStyle.tabItem(
                     icon: item.icon,
                     selectedIcon: item.selectedIcon,
                     title: item.title,
-                    isSelected: self.selectedItem.selection == item
+                    isSelected: selectedItem.selection == item
                 )
                 .onTapGesture {
-                    self.selectedItem.selection = item
-                    self.selectedItem.objectWillChange.send()
+                    selectedItem.selection = item
                 }
             }
             .frame(maxWidth: .infinity)
         }
     }
-    
+
     public var body: some View {
         ZStack {
-            self.content
+            content()
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .environmentObject(self.selectedItem)
-            
+                .environmentObject(selectedItem)
+
             GeometryReader { geometry in
                 VStack {
                     Spacer()
-                    
-                    self.tabBarStyle.tabBar(with: geometry) {
-                        .init(self.tabItems)
+
+                    tabBarStyle.tabBar(with: geometry) {
+                        .init(tabItems)
                     }
                 }
                 .edgesIgnoringSafeArea(.bottom)
-                .visibility(self.visibility)
+                .visibility(visibility)
             }
         }
         .onPreferenceChange(TabBarPreferenceKey.self) { value in
-            self.items = value
+            if value != selectedItem.items {
+                selectedItem.items = value
+            }
         }
     }
-    
 }
 
-extension TabBar {
+public extension TabBar {
     /**
      A function that is used to apply tab item's style on `TabBar`.
-     
+
      By passing the instance of object that conforms to `TabItemStyle`
      protocol `TabBar` will use this style for its items.
-     
+
      - Parameters:
         - style: Item style that should be applied to `TabBar`.
-     
+
      - Returns:
         `TabBar` with applied item style.
      */
-    public func tabItem<ItemStyle: TabItemStyle>(style: ItemStyle) -> Self {
+    func tabItem(style: some TabItemStyle) -> Self {
         var _self = self
         _self.tabItemStyle = .init(itemStyle: style)
         return _self
     }
-    
+
     /**
      A function that is used to apply tab bar's style on `TabBar`.
-     
+
      By passing the instance of object that conforms to `TabBarStyle`
      protocol `TabBar` will apply this style to its bar.
-     
+
      - Parameters:
         - style: Bar style that should be applied to `TabBar`.
-     
+
      - Returns:
         `TabBar` with applied bar style.
      */
-    public func tabBar<BarStyle: TabBarStyle>(style: BarStyle) -> Self {
+    func tabBar(style: some TabBarStyle) -> Self {
         var _self = self
         _self.tabBarStyle = .init(barStyle: style)
         return _self
