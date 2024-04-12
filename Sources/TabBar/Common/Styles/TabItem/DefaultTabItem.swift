@@ -32,17 +32,22 @@ import SwiftUI
 public struct DefaultTabItemStyle: TabItemStyle {
 
     @ViewBuilder
-    public func tabItem(icon: Image, title: String, isSelected: Bool) -> some View {
+    public func tabItem(icon: Image, selectedIcon: Image, title: String, isSelected: Bool) -> some View {
         let color: Color = isSelected ? .accentColor : .gray
         
         VStack(spacing: 5.0) {
-            icon
-                .renderingMode(.template)
+            Group {
+                if isSelected {
+                    selectedIcon
+                } else {
+                    icon
+                }
+            }
+            .renderingMode(.template)
             
             Text(title)
                 .font(.system(size: 10.0, weight: .medium))
         }
-        .foregroundColor(color)
+        .foregroundColor(isSelected ? .accentColor : .gray)
     }
-    
 }

@@ -30,12 +30,19 @@ public protocol Tabbable: Hashable {
     /// Icon of `TabBar's` item.
     var icon: Image { get }
     
+    /// Selected icon name of `TabBar's` item.
+    var selectedIcon: Image { get }
+    
     /// Title of `TabBar's` item.
     var title: String { get }
 }
 
-extension Tabbable {
-    public func hash(into hasher: inout Hasher) {
+public extension Tabbable {
+    var selectedIcon: String {
+        return self.icon
+    }
+
+    func hash(into hasher: inout Hasher) {
         hasher.combine(self.title)
     }
 }
