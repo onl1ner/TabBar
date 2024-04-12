@@ -33,17 +33,14 @@ public struct DefaultTabItemStyle: TabItemStyle {
 
     @ViewBuilder
     public func tabItem(icon: Image, selectedIcon: Image, title: String, isSelected: Bool) -> some View {
-        let color: Color = isSelected ? .accentColor : .gray
-        
         VStack(spacing: 5.0) {
-            Group {
-                if isSelected {
-                    selectedIcon
-                } else {
-                    icon
-                }
+            if isSelected {
+                selectedIcon
+                    .renderingMode(.template)
+            } else {
+                icon
+                    .renderingMode(.template)
             }
-            .renderingMode(.template)
             
             Text(title)
                 .font(.system(size: 10.0, weight: .medium))

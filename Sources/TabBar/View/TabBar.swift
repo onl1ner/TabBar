@@ -49,8 +49,8 @@ public struct TabBar<TabItem: Tabbable, Content: View>: View {
     private let selectedItem: TabBarSelection<TabItem>
     private let content: Content
     
-    private var tabItemStyle : AnyTabItemStyle
-    private var tabBarStyle  : AnyTabBarStyle
+    private var tabItemStyle: AnyTabItemStyle
+    private var tabBarStyle: AnyTabBarStyle
     
     @State private var items: [TabItem]
     

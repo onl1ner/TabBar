@@ -34,7 +34,7 @@ public protocol TabItemStyle {
     associatedtype Content: View
     
     func tabItem(icon: Image, title: String, isSelected: Bool) -> Content
-    func tabItem(icon: String, selectedIcon: Image, title: String, isSelected: Bool) -> Content
+    func tabItem(icon: Image, selectedIcon: Image, title: String, isSelected: Bool) -> Content
 }
 
 extension TabItemStyle {
@@ -46,7 +46,7 @@ extension TabItemStyle {
         return self.tabItem(icon: icon, title: title, isSelected: isSelected)
     }
     
-    func tabItemErased(icon: String, selectedIcon: String, title: String, isSelected: Bool) -> AnyView {
+    func tabItemErased(icon: Image, selectedIcon: Image, title: String, isSelected: Bool) -> AnyView {
         return .init(self.tabItem(icon: icon, selectedIcon: selectedIcon, title: title, isSelected: isSelected))
     }
 }

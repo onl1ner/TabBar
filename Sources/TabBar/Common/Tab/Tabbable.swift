@@ -38,7 +38,7 @@ public protocol Tabbable: Hashable {
 }
 
 public extension Tabbable {
-    var selectedIcon: String {
+    var selectedIcon: Image {
         return self.icon
     }
 
