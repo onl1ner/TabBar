@@ -30,11 +30,8 @@ struct TabBarViewModifier<TabItem: Tabbable>: ViewModifier {
     
     func body(content: Content) -> some View {
         Group {
-            if self.item == self.selectionObject.selection {
-                content
-            } else {
-                Color.clear
-            }
+            content
+				.opacity(self.item == self.selectionObject.selection ? 1 : 0)
         }
         .preference(key: TabBarPreferenceKey.self, value: [self.item])
     }
