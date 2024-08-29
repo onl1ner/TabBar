@@ -51,11 +51,6 @@ public enum TabBarVisibility: CaseIterable {
      state: `visible` will become `invisible` and vice versa.
      */
     public mutating func toggle() {
-        switch self {
-        case .visible:
-            self = .invisible
-        case .invisible:
-            self = .visible
-        }
+        self = self == .visible ? .invisible : .visible
     }
 }
